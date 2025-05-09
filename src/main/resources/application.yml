@@ -1,1 +1,14 @@
-spring.application.name=api-consulta-credito
+spring:
+  datasource:
+    url: jdbc:postgresql://db:5432/credito_db
+    username: credito_user
+    password: senha_segura
+  jpa:
+    hibernate:
+      ddl-auto: none
+    show-sql: false
+
+flyway:
+  enabled: true
+  locations: classpath:db/migration
+  baseline-on-migrate: true

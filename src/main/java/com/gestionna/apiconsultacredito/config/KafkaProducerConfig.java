@@ -1,6 +1,6 @@
 package com.gestionna.apiconsultacredito.config;
 
-import com.gestionna.apiconsultacredito.entity.dto.CreditoDto;
+import com.gestionna.apiconsultacredito.model.dto.CreditoDto;
 import org.apache.kafka.clients.producer.ProducerConfig;
 import org.apache.kafka.common.serialization.StringSerializer;
 import org.springframework.beans.factory.annotation.Value;

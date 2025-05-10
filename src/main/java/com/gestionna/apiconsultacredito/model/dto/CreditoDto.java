@@ -1,6 +1,6 @@
-package com.gestionna.apiconsultacredito.entity.dto;
+package com.gestionna.apiconsultacredito.model.dto;
 
-import com.gestionna.apiconsultacredito.entity.enums.SimplesNacional;
+import com.gestionna.apiconsultacredito.model.enums.SimplesNacional;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;

@@ -1,6 +1,6 @@
 package com.gestionna.apiconsultacredito.controller;
 
-import com.gestionna.apiconsultacredito.entity.dto.CreditoDto;
+import com.gestionna.apiconsultacredito.model.dto.CreditoDto;
 import com.gestionna.apiconsultacredito.service.CreditoService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;

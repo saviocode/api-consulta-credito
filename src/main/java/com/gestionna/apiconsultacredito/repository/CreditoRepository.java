@@ -1,6 +1,6 @@
 package com.gestionna.apiconsultacredito.repository;
 
-import com.gestionna.apiconsultacredito.entity.Credito;
+import com.gestionna.apiconsultacredito.model.entity.Credito;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.*;

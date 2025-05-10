@@ -1,4 +1,4 @@
-package com.gestionna.apiconsultacredito.entity;
+package com.gestionna.apiconsultacredito.model.entity;
 
 import jakarta.persistence.*;
 import lombok.*;

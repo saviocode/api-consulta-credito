@@ -1,6 +1,6 @@
 package com.gestionna.apiconsultacredito.service;
 
-import com.gestionna.apiconsultacredito.entity.dto.CreditoDto;
+import com.gestionna.apiconsultacredito.model.dto.CreditoDto;
 
 import java.util.List;
 

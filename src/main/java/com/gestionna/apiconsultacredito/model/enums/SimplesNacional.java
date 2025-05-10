@@ -1,4 +1,4 @@
-package com.gestionna.apiconsultacredito.entity.enums;
+package com.gestionna.apiconsultacredito.model.enums;
 
 public enum SimplesNacional {
     SIM("Sim"),

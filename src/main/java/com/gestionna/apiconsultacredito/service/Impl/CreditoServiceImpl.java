@@ -1,8 +1,8 @@
 package com.gestionna.apiconsultacredito.service.Impl;
 
-import com.gestionna.apiconsultacredito.entity.Credito;
-import com.gestionna.apiconsultacredito.entity.dto.CreditoDto;
-import com.gestionna.apiconsultacredito.entity.enums.SimplesNacional;
+import com.gestionna.apiconsultacredito.model.entity.Credito;
+import com.gestionna.apiconsultacredito.model.dto.CreditoDto;
+import com.gestionna.apiconsultacredito.model.enums.SimplesNacional;
 import com.gestionna.apiconsultacredito.repository.CreditoRepository;
 import com.gestionna.apiconsultacredito.service.CreditoService;
 import lombok.extern.slf4j.Slf4j;

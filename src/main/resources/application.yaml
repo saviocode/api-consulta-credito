@@ -18,7 +18,7 @@ spring:
 
   sql:
     init:
-      enabled: false
+      mode: never
 
   kafka:
     bootstrap-servers: "${KAFKA_BOOTSTRAP_SERVERS:kafka:9092},localhost:29092"

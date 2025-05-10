@@ -5,6 +5,7 @@ import com.gestionna.apiconsultacredito.entity.dto.CreditoDto;
 import com.gestionna.apiconsultacredito.entity.enums.SimplesNacional;
 import com.gestionna.apiconsultacredito.repository.CreditoRepository;
 import com.gestionna.apiconsultacredito.service.CreditoService;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.beans.factory.annotation.Value;
 import lombok.RequiredArgsConstructor;
@@ -15,12 +16,15 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 
 @Service
+@Slf4j
 @RequiredArgsConstructor
 public class CreditoServiceImpl implements CreditoService {
-    private final CreditoRepository repositorio;
-    private final KafkaTemplate<String, CreditoDto> kafka;
 
-    @Value("${kafka.topic.consulta-creditos}")
+    private final CreditoRepository repositorio;
+    private final KafkaTemplate<String, CreditoDto> kafkaTemplate;
+
+
+    @Value("${kafka.topic.consulta-creditos:consulta-creditos-topic}")
     private String topico;
 
     @Override
@@ -28,29 +32,42 @@ public class CreditoServiceImpl implements CreditoService {
     public List<CreditoDto> buscarPorNfse(String numeroNfse) {
         List<CreditoDto> dtos = repositorio.findByNumeroNfse(numeroNfse)
                 .stream()
-                .map(cred -> new CreditoDto(
-                        cred.getNumeroCredito(),
-                        cred.getNumeroNfse(),
-                        cred.getDataConstituicao(),
-                        cred.getValorIssqn(),
-                        cred.getTipoCredito(),
-                        cred.isSimplesNacional() ? SimplesNacional.SIM : SimplesNacional.NAO,
-                        cred.getAliquota(),
-                        cred.getValorFaturado(),
-                        cred.getValorDeducao(),
-                        cred.getBaseCalculo()
-                ))
+                .map(this::mapToDto)
                 .toList();
-        dtos.forEach(dto -> kafka.send(topico, dto));
+
+        dtos.forEach(dto -> {
+            kafkaTemplate.send(topico, dto)
+                    .whenComplete((result, ex) -> {
+                        if (ex != null) {
+                            log.error("Falha ao enviar evento Kafka para crédito {}: {}", dto.numeroCredito(), ex.getMessage(), ex);
+                        } else {
+                            log.info("Evento Kafka enviado com sucesso para crédito {} " + "no tópico {} (partition: {}, offset: {})",
+                                    dto.numeroCredito(),
+                                    topico,
+                                    result.getRecordMetadata().partition(),
+                                    result.getRecordMetadata().offset());
+                        }
+                    });
+        });
+
         return dtos;
     }
+
+
 
     @Override
     @Transactional(readOnly = true)
     public CreditoDto buscarPorNumeroCredito(String numeroCredito) {
         Credito cred = repositorio.findByNumeroCredito(numeroCredito)
                 .orElseThrow(() -> new ResourceNotFoundException("Crédito não encontrado"));
-        CreditoDto dto = new CreditoDto(
+
+        CreditoDto dto = mapToDto(cred);
+        kafkaTemplate.send(topico, dto);
+        return dto;
+    }
+
+    private CreditoDto mapToDto(Credito cred) {
+        return new CreditoDto(
                 cred.getNumeroCredito(),
                 cred.getNumeroNfse(),
                 cred.getDataConstituicao(),
@@ -62,8 +79,5 @@ public class CreditoServiceImpl implements CreditoService {
                 cred.getValorDeducao(),
                 cred.getBaseCalculo()
         );
-        kafka.send(topico, dto);
-        return dto;
     }
-
 }

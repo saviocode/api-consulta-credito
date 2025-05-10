@@ -35,7 +35,7 @@ public class CreditoServiceImpl implements CreditoService {
                 .map(this::mapToDto)
                 .toList();
 
-        dtos.forEach(dto -> {
+        for (CreditoDto dto : dtos)
             kafkaTemplate.send(topico, dto)
                     .whenComplete((result, ex) -> {
                         if (ex != null) {
@@ -48,12 +48,8 @@ public class CreditoServiceImpl implements CreditoService {
                                     result.getRecordMetadata().offset());
                         }
                     });
-        });
-
         return dtos;
     }
-
-
 
     @Override
     @Transactional(readOnly = true)

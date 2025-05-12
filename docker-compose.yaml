@@ -41,5 +41,18 @@ services:
       KAFKA_CFG_LISTENER_SECURITY_PROTOCOL_MAP: "PLAINTEXT:PLAINTEXT,PLAINTEXT_HOST:PLAINTEXT"
     depends_on:
       - zookeeper
+
+  api:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    image: api-consulta-credito:latest
+    ports:
+      - "8080:8080"
+    depends_on:
+      - db
+      - zookeeper
+      - kafka
+
 volumes:
   postgres-data:

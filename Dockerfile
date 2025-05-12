@@ -1,9 +1,17 @@
-FROM eclipse-temurin:17-jre-jammy
-
+FROM maven:3.8.5-openjdk-17-slim AS build
 WORKDIR /app
 
-COPY target/api-consulta-credito-*.jar app.jar
+# cache de dependências
+COPY pom.xml .
+RUN mvn dependency:go-offline
 
+# build da aplicação
+COPY src ./src
+RUN mvn package -DskipTests
+
+FROM openjdk:17-jdk-slim AS runtime
+WORKDIR /app
+
+COPY --from=build /app/target/*.jar app.jar
 EXPOSE 8080
-
-ENTRYPOINT ["java","-jar","app.jar"]
+CMD ["java", "-jar", "app.jar"]

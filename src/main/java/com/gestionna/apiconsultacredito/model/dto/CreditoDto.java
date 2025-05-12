@@ -11,7 +11,7 @@ public record CreditoDto(
         LocalDate dataConstituicao,
         BigDecimal valorIssqn,
         String tipoCredito,
-        SimplesNacional simplesNacional,   // “Sim” ou “Não”
+        SimplesNacional simplesNacional,
         BigDecimal aliquota,
         BigDecimal valorFaturado,
         BigDecimal valorDeducao,

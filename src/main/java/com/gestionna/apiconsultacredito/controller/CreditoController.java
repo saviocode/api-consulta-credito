@@ -10,6 +10,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/api/creditos")
+@CrossOrigin(origins = "http://localhost:4200")
 @RequiredArgsConstructor
 public class CreditoController {
     private final CreditoService servico;
@@ -24,3 +25,4 @@ public class CreditoController {
         return ResponseEntity.ok(servico.buscarPorNumeroCredito(numeroCredito));
     }
 }
+

@@ -36,7 +36,7 @@ class CreditoControllerTest {
 
         when(service.buscarPorNumeroCredito("123")).thenReturn(dto);
 
-        mvc.perform(get("/api/creditos/credito/123456")
+        mvc.perform(get("/api/creditos/credito/123")
                         .accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.numeroCredito").value("123"))
